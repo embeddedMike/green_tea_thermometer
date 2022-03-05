@@ -1,13 +1,13 @@
 /*
- * fsmMenu.h
+ * fsm.h
  *
- *  Created on: 24 wrz 2016
- *      Author: Micha³
+ *  Created on: -
+ *      Author: Michal Balicki
  */
 
 
 #include "config.h"
-#include "LCD.h"
+#include "lcd.h"
 
 #ifndef FSMMENU_FSMMENU_H_
 #define FSMMENU_FSMMENU_H_

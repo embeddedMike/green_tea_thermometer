@@ -1,8 +1,8 @@
 /*
- * MOC3041.h
+ * moc3041.h
  *
- *  Created on: 1 paü 2016
- *      Author: Micha≥
+ *  Created on: -
+ *      Author: Michal Balicki
  */
 
 #ifndef MOC3041_MOC3041_H_

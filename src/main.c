@@ -1,12 +1,12 @@
 /*
  *
  *
- *  Created on: 29.04.2016
+ *  Created on: -
  *      Author: Michal Balicki
  */
 /******************************************************************************
-* project: Sterownik pieca centralnego ogrzewania
-* chip: STM32F103RC
+* project: Green Tea Thermometer
+* chip: STM32F103RN
 * compiler: arm-none-eabi-gcc
 ******************************************************************************/
 
@@ -17,13 +17,13 @@
 */
 
 #include "include/config.h"
-#include "include/LCD.h"
-#include "include/Temp_Uart.h"
+#include "include/lcd.h"
+#include "include/ds18b20.h"
 #include "include/printf.h"
-#include "include/Klawiatura.h"
-#include "include/Labview_Uart.h"
-#include "include/Serwo.h"
-#include "include/fsmMenu.h"
+#include "include/microswitch.h"
+//#include "include/servo.h"
+//#include "include/fsm.h"
+//#include "include/Labview_Uart.h"
 
 static void flash_latency(uint32_t frequency);
 static uint32_t pll_start(uint32_t frequency);
@@ -36,10 +36,6 @@ uint8_t lms10=255;
 uint8_t ls1=255;
 uint8_t ams_cnt=0;
 uint8_t pompaON;
-
-//uint8_t serce[] = {32,10,31,31,31,14,4,32};
-
-//auto zmienna=27;
 
 int main(void)
 {
@@ -65,12 +61,12 @@ int main(void)
 	SysTick_Config(FREQUENCY/1000);
 	timer6_init_delay();
 	//timer2_init_PWMserwo();
-	serwoAngle0();
+	//serwoAngle0();
 	ow_init();
-	LCD_inicjalizacja();
+	lcdInit();
 	timer4_Debounce();
 	//lcd_defchar(0,serce);
-	usartLabView_init();
+	//usartLabView_init();
 	//LCD_pozycjonowanie_kursora(2,2);
 
 	//initMenu();
@@ -79,105 +75,27 @@ int main(void)
 
 	while(1)
 	{
+		//klawiszOdczyt();
 
-
-		klawiszOdczyt();
-		if(menuEvent)
+		if( lms10 != ms10_cnt )
 		{
-			zmianaMenu();
-
-		}
-		if(currentMenu == 0)
-		{
-			//menuIddle();
-		}
-
-		/*if (tick_750ms == 1){
-			//usartLabView_string("test");
-			//usartLabView_wyswietlanie_liczby(temp,2);
-			//usartLabView_transmit(temp);
-		}*/
-
-		if( lms10 != ms10_cnt ) {
-			//dioda pa1 co 10 ms
 			lms10 = ms10_cnt;
-
-			//GPIOA->ODR ^= (1<<1);
-
-			if(Piec!=0 && Histereza!=0 && Pompa!=0)
-			{
-
-				if(temp>=Pompa)
-				{
-					//serwoAngle90();
-					GPIOA->ODR &= ~(1<<0); // MOC 3041 ON
-					pompaON = 1; // ON
-				}
-				else
-				{
-					GPIOA->ODR |= (1<<0);
-					pompaON = 0; //OFF
-				}
-
-				if((temp >= (Piec-(Histereza))) || temp==Piec)
-				{
-					//serwoAngle45();
-				}
-				if((temp > Piec))
-				{
-					//serwoAngle0();
-				}
-			}
 		}
 
-		if(ls1 != s1_cnt){
-			//dioda PA4 i temp.
-
-                        //GPIOA->ODR |= (1<<5);
+		if(ls1 != s1_cnt)
+		{
 			tick_750ms = 0;
 			ds18b20_read_temperature(&znak, &temp, &reszta);
 			sprintf_(buffer, ((znak == DS_ZNAK_MINUS) ? "-%d.%d\x7f""C":"Temp: %d.%d"), temp, (reszta*10)/16);
-			LCD_pozycjonowanie_kursora(2,2);
-			LCD_string(buffer);
+			lcdCursorPositon(2,2);
+			lcdString(buffer);
 			GPIOA->ODR ^= (1<<5);
 			ds18b20_convert();
 
-			if(!(s1_cnt % 10)) //temperatura wody
-			{
-				usartLabView_transmit(temp);
-				//usartLabView_string("temp");
-				GPIOA->ODR ^= (1<<4);
-			}
-
-
-
-
-			if(!(s1_cnt % 15)) // czy pompa w³¹czona
-			{
-				usartLabView_transmit(pompaON); // 1 gdy pompa w³¹czona
-				GPIOA->ODR ^= (1<<4);
-			}
-
-
-
-			//if(!(s1_cnt % 26)) // czy pompa w³¹czona
-			//{
-				//usartLabView_string(temp); // 1 gdy pompa w³¹czona
-			//	usartLabView_wyswietlanie_liczby(temp,10);
-				//GPIOA->ODR ^= (1<<4);
-		//	}
-
 			ls1 = s1_cnt;
-
 		}
+	}
 }
-
-}
-
-
-
-
-
 
 static void flash_latency(uint32_t frequency)
 {
@@ -253,8 +171,6 @@ static void system_init2(void)
 
 void SysTick_Handler(void)
 {
-
-
 	//every 1ms
 	count750ms++;
 	if (count750ms == count_max750ms) // every 1s
@@ -263,12 +179,10 @@ void SysTick_Handler(void)
 		tick_750ms=1;
 		//GPIOA->ODR ^= (1<<5);
 	}
-
-
-
 }
 
-/*void TIM2_IRQHandler(void){
+/*
+void TIM2_IRQHandler(void){
 
 	if(TIM2->SR & TIM_SR_UIF){
 
@@ -276,10 +190,6 @@ void SysTick_Handler(void)
 
 	   //GPIOA->ODR ^= 1<<5;
 	   GPIOA->ODR ^= 1<<0;
-
 	}
-
-}*/
-
-
-
+}
+*/

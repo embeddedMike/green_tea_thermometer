@@ -1,8 +1,8 @@
 /*
- * Temp_Uart.h
+ * ds18b20.h
  *
- *  Created on: 1 maj 2016
- *      Author: Micha³
+ *  Created on: -
+ *      Author: TQElectronic
  */
 
 #include "config.h"

@@ -1,16 +1,16 @@
 /*
- * Labview_Uart.c
+ * labview_uart.c
  *
- *  Created on: 3 lip 2016
- *      Author: Micha³
+ *  Created on: -
+ *      Author: Michal Balicki
  */
 //#include "inc/stm32f10x.h"
 
-#include "include/Labview_Uart.h"
+#include "include/labview_uart.h"
 
 /*
  * USART4
- * nó¿ki PC10 i PC11
+ * nï¿½ki PC10 i PC11
  * PC10 - Tx
  * PC11 - Rx
  */

@@ -1,23 +1,23 @@
 /*
- * Klawiatura.c
+ * microswitch.c
  *
- *  Created on: 1 maj 2016
- *      Author: Micha³
+ *  Created on: -
+ *      Author: Michal Balicki
  */
 // 5 klawiszy na PB5-PB9
 
-#include "include/Klawiatura.h"
+#include "include/microswitch.h"
 
 uint8_t static duty;
-volatile uint8_t ms10_cnt; // JEST
-volatile uint8_t s1_cnt;  // JEST
+volatile uint8_t ms10_cnt; // OK
+volatile uint8_t s1_cnt;  // OK
 
 
 
 void timer4_Debounce(void){
 
 	RCC->APB1ENR |= RCC_APB1ENR_TIM4EN;
-	// domyœlnie 8MHz
+	// domyslnie 8MHz
 	TIM4->PSC = 7999; // 8000/8MHz daje 1ms
 	TIM4->ARR = 9; // przerwanie co 10ms
 	TIM4->DIER |= TIM_DIER_UIE;
@@ -35,21 +35,19 @@ void ButtonGpio_init(void){
 	gpio_pin_cfg(KLAWIATURA_GPIO, BUTTON5,GPIO_CRx_MODE_CNF_IN_PULL_U_D_value);
 
 	GPIOB->ODR = (1<<5) | (1<<6) | (1<<7) | (1<<8) | (1<<9);
-	//GPIOB->ODR |= (1<<6);
-
 }
 
-void ButtonPress(uint16_t button,uint32_t wait,void(*wsk)(uint8_t *zmienna),void(*wsk2)(void)){
+void ButtonPress(uint16_t button,uint32_t wait,void(*wsk)(uint8_t *zmienna),void(*wsk2)(void))
+{
 
-	//Timer1 = 15;
-	//if(!Timer1){
 	static uint8_t klock;
 	static uint32_t flag;
 
 	uint8_t helpVariable2;
 	uint8_t helpVariable;
 
-	if(!klock && !(GPIOB->IDR & button)){
+	if(!klock && !(GPIOB->IDR & button))
+	{
 
 		klock=1;
 
@@ -60,7 +58,8 @@ void ButtonPress(uint16_t button,uint32_t wait,void(*wsk)(uint8_t *zmienna),void
 		Timer1 = (wait*1000)/10;
 
 	}
-	else if(klock && (GPIOB->IDR & button)){
+	else if(klock && (GPIOB->IDR & button))
+	{
 
 		klock++;
 		if(!klock){
@@ -68,9 +67,9 @@ void ButtonPress(uint16_t button,uint32_t wait,void(*wsk)(uint8_t *zmienna),void
 			flag=0;
 		}
 
-	}else if(flag && !Timer1){
+	}else if(flag && !Timer1)
+	{
 
-		//ewentualnie drugi wskaznik na funkcje
 		flag=0;
 	}
 }

@@ -1,11 +1,11 @@
 /*
- * fsmMenu.c
+ * fsm.c
  *
- *  Created on: 24 wrz 2016
- *      Author: Micha³
+ *  Created on: -
+ *      Author: Michal Balicki
  */
 
-#include "include/fsmMenu.h"
+#include "include/fsm.h"
 
 uint8_t Histereza=2;
 uint8_t Piec=32;
@@ -37,7 +37,7 @@ typedef struct
 
 /* tablica struktur:
  * nazwa_struktury nazawa_tablicy [liczba_elementow]
- * W tablicy bêdzie:
+ * W tablicy bï¿½dzie:
  *
  */
 const menuItem menu[] = {
@@ -45,7 +45,7 @@ const menuItem menu[] = {
 	{{0, 1, 2, 3, 0}, NULL, MN02,NULL},
 	{{0, 2, 0, 4, 0}, NULL,	MN03,NULL},
 	{{0, 0, 1, 5, 0}, NULL,	MN04,NULL},
-	{{0, 3, 3, 3, 0}, setHistereza,	NULL,MN05}, // tu callbacki, przy exit brak funkcji przejœcia
+	{{0, 3, 3, 3, 0}, setHistereza,	NULL,MN05}, // tu callbacki, przy exit brak funkcji przejï¿½cia
 	{{0, 4, 4, 4, 0}, setPiectemp,	NULL,MN06},
 	{{0, 5, 5, 5, 0}, setPompatemp,	NULL,MN07}
 };

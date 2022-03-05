@@ -1,8 +1,8 @@
 /*
- * Klawiatura.h
+ * microswitch.h
  *
- *  Created on: 1 maj 2016
- *      Author: Micha³
+ *  Created on: -
+ *      Author: Michal Balicki
  */
 
 //#include "../../inc/stm32f103xe.h"
