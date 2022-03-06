@@ -1,8 +1,7 @@
 /*
  * printf.h
  *
- *  Created on: 2 maj 2016
- *      Author: Micha³
+ *      Author: Freddie Chopin, http://www.freddiechopin.info/
  */
 
 #ifndef PRINTF_PRINTF_H_

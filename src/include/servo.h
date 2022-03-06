@@ -1,18 +1,17 @@
 /*
- * Serwo.h
+ * servo.h
  *
- *  Created on: 1 maj 2016
- *      Author: Micha³
+ *      Author: Michal Balicki
  */
 
 #include "config.h"
 
-#ifndef SERWO_SERWO_H_
-#define SERWO_SERWO_H_
+#ifndef SERVO_SERVO_H_
+#define SERVO_SERVO_H_
 
-void timer2_init_PWMserwo(void);
-void serwoAngle0(void);
-void serwoAngle45(void);
-void serwoAngle90(void);
+void timer2InitPwmServo(void);
+void servoAngle0(void);
+void servoAngle45(void);
+void servoAngle90(void);
 
-#endif /* SERWO_SERWO_H_ */
+#endif /* SERVO_SERWO_H_ */

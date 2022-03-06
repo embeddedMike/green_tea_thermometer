@@ -1,7 +1,6 @@
 /*
  * fsm.c
  *
- *  Created on: -
  *      Author: Michal Balicki
  */
 
@@ -35,17 +34,12 @@ typedef struct
 	const unsigned char* secondLine;
 }menuItem;
 
-/* tablica struktur:
- * nazwa_struktury nazawa_tablicy [liczba_elementow]
- * W tablicy b�dzie:
- *
- */
 const menuItem menu[] = {
    // ID UP DN OK EX
 	{{0, 1, 2, 3, 0}, NULL, MN02,NULL},
 	{{0, 2, 0, 4, 0}, NULL,	MN03,NULL},
 	{{0, 0, 1, 5, 0}, NULL,	MN04,NULL},
-	{{0, 3, 3, 3, 0}, setHistereza,	NULL,MN05}, // tu callbacki, przy exit brak funkcji przej�cia
+	{{0, 3, 3, 3, 0}, setHistereza,	NULL,MN05}, // tu callbacki, przy exit brak funkcji przejscia
 	{{0, 4, 4, 4, 0}, setPiectemp,	NULL,MN06},
 	{{0, 5, 5, 5, 0}, setPompatemp,	NULL,MN07}
 };
@@ -81,7 +75,7 @@ void zmianaMenu(void)
 
 void klawiszOdczyt(void)
 {
-	static unsigned char tpss; // po co ta zmienna
+	static unsigned char tpss;
 	unsigned char key;
 	menuEvent = E_IDDLE;
 
@@ -130,7 +124,6 @@ void klawiszOdczyt(void)
 
 }
 
-
 void menuIddle(void)
 {
 	LCD_pozycjonowanie_kursora(0,0);
@@ -144,22 +137,7 @@ void menuIddle(void)
 
 void setHistereza(unsigned char event)
 {
-	//LCD_wczytywanie_komendy(0x01);
-	//clear_line(0);
-	//clear_line(1);
-	//LCD_pozycjonowanie_kursora(0,0);
-	//LCD_string("                ");
-	//LCD_pozycjonowanie_kursora(1,0);
-	//LCD_string("                ");
-	//LCD_pozycjonowanie_kursora(2,0);
-	//LCD_string("                ");
-	//LCD_pozycjonowanie_kursora(3,0);
-	static uint8_t tempHistereza;// musi byc static
-
-
-
-	//LCD_pozycjonowanie_kursora(0,0);
-	//LCD_string("1.Histereza:");
+	static uint8_t tempHistereza;
 
 	switch(event)
 	{
@@ -182,41 +160,10 @@ void setHistereza(unsigned char event)
 	}
 	LCD_pozycjonowanie_kursora(1,12);
 	LCD_wyswietlanie_liczby(tempHistereza,10);
-	//LCD_pozycjonowanie_kursora(3,2);
-	//LCD_string("Temp:");
-
-
-
-	/*if(tempHistereza>=5)
-	{
-		tempHistereza=0;
-		Histereza=5;
-	}
-	else
-	{
-		Histereza=tempHistereza;
-	}
-*/
-
 }
 void setPiectemp(unsigned char event)
 {
-	//LCD_wczytywanie_komendy(0x01);
-	//clear_line(0);
-	//clear_line(1);
-	//LCD_pozycjonowanie_kursora(0,0);
-	//LCD_string("                ");
-	//LCD_pozycjonowanie_kursora(1,0);
-	//LCD_string("                ");
-	//LCD_pozycjonowanie_kursora(2,0);
-	//LCD_string("                ");
-	//LCD_pozycjonowanie_kursora(3,0);
-	static uint8_t tempPiec;// musi byc static
-
-
-
-	//LCD_pozycjonowanie_kursora(0,0);
-	//LCD_string("1.Histereza:");
+	static uint8_t tempPiec;
 
 	switch(event)
 	{
@@ -239,43 +186,12 @@ void setPiectemp(unsigned char event)
 	}
 	LCD_pozycjonowanie_kursora(1,12);
 	LCD_wyswietlanie_liczby(tempPiec,10);
-	//LCD_pozycjonowanie_kursora(3,2);
-	//LCD_string("Temp:");
-
-
-
-	/*if(tempHistereza>=5)
-	{
-		tempHistereza=0;
-		Histereza=5;
-	}
-	else
-	{
-		Histereza=tempHistereza;
-	}
-*/
-
 }
 
 
 void setPompatemp(unsigned char event)
 {
-	//LCD_wczytywanie_komendy(0x01);
-	//clear_line(0);
-	//clear_line(1);
-	//LCD_pozycjonowanie_kursora(0,0);
-	//LCD_string("                ");
-	//LCD_pozycjonowanie_kursora(1,0);
-	//LCD_string("                ");
-	//LCD_pozycjonowanie_kursora(2,0);
-	//LCD_string("                ");
-	//LCD_pozycjonowanie_kursora(3,0);
-	static uint8_t tempPompa;// musi byc static
-
-
-
-	//LCD_pozycjonowanie_kursora(0,0);
-	//LCD_string("1.Histereza:");
+	static uint8_t tempPompa;
 
 	switch(event)
 	{
@@ -298,20 +214,4 @@ void setPompatemp(unsigned char event)
 	}
 	LCD_pozycjonowanie_kursora(1,12);
 	LCD_wyswietlanie_liczby(tempPompa,10);
-	//LCD_pozycjonowanie_kursora(3,2);
-	//LCD_string("Temp:");
-
-
-
-	/*if(tempHistereza>=5)
-	{
-		tempHistereza=0;
-		Histereza=5;
-	}
-	else
-	{
-		Histereza=tempHistereza;
-	}
-*/
-
 }

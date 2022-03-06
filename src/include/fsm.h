@@ -1,7 +1,6 @@
 /*
  * fsm.h
  *
- *  Created on: -
  *      Author: Michal Balicki
  */
 

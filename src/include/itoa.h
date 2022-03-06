@@ -1,8 +1,7 @@
 /*
  * itoa.h
  *
- *  Created on: 2 maj 2016
- *      Author: Micha³
+ *      Author: Author: Freddie Chopin, http://www.freddiechopin.info/
  */
 
 #ifndef ITOA_ITOA_H_

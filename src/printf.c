@@ -1,8 +1,7 @@
 /*
  * printf.c
  *
- *  Created on: 2 maj 2016
- *      Author: Micha³
+ *      Author: Freddie Chopin, http://www.freddiechopin.info/
  */
 #include <stdarg.h>
 #include <stdlib.h>
@@ -198,7 +197,3 @@ static int __vfprintf_(printf_file_t *stream, const char *format, va_list arg)
 
 	return stream->length;
 }
-
-
-
-

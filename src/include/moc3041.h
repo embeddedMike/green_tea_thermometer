@@ -1,7 +1,6 @@
 /*
  * moc3041.h
  *
- *  Created on: -
  *      Author: Michal Balicki
  */
 

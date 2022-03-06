@@ -1,18 +1,17 @@
 /*
  * Labview_Uart.h
  *
- *  Created on: 3 lip 2016
- *      Author: Micha³
+ *      Author: Michal Balicki
  */
 
 #include "config.h"
 
 #ifndef LABVIEW_UART_LABVIEW_UART_H_
 #define LABVIEW_UART_LABVIEW_UART_H_
-extern volatile uint8_t interruptData;
-void usartLabView_init();
-void usartLabView_transmit(uint8_t data);
-void usartLabView_string(char *str);
-void usartLabView_wyswietlanie_liczby(uint8_t liczba, uint8_t rodzaj);
+
+void usartLabViewInit();
+void usartLabViewTransmit(uint8_t data);
+void usartLabViewString(char *str);
+void usartLabViewPrintNumbers(uint8_t number, uint8_t type);
 
 #endif /* LABVIEW_UART_LABVIEW_UART_H_ */

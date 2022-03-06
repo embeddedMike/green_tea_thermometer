@@ -1,8 +1,7 @@
 /*
  * ds18b20.h
  *
- *  Created on: -
- *      Author: TQElectronic
+ *      Author: TQelektronik
  */
 
 #include "config.h"

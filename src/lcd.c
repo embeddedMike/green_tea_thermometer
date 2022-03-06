@@ -1,12 +1,9 @@
 /*
  * lcd.c
  *
- *  Created on: -
  *      Author: Michal Balicki
  */
 #include "include/lcd.h"
-
-
 
 void gpioInit(void)
 {
@@ -14,74 +11,69 @@ void gpioInit(void)
 			| (GPIO_CRL_MODE0_1 | GPIO_CRL_MODE1_1 | GPIO_CRL_MODE2_1 | GPIO_CRL_MODE3_1 | GPIO_CRL_MODE4_1 | GPIO_CRL_MODE5_1);
 
 	GPIOC->CRL = (GPIOC->CRL & (~(GPIO_CRL_CNF0_0 | GPIO_CRL_CNF1_0 | GPIO_CRL_CNF2_0 | GPIO_CRL_CNF3_0 | GPIO_CRL_CNF4_0 | GPIO_CRL_CNF5_0)));
-	//GPIOC->BSRR = (1<<0) | (1<<1) | (1<<2) | (1<<3) | (1<<4) | (1<<5);
 }
 
-void lcdReadPartialByte(uint8_t bajt)
+void lcdReadPartialByte(uint8_t byte)
 {
-	//Starsza
-	GPIOC->ODR = ((bajt >> 4) & 0x0F) | (1<<4);
-	GPIOC->ODR = ((bajt >> 4) & 0x0F);
-	//Mlodsza
-	GPIOC->ODR = (bajt & 0x0F) | (1<<4);
-	GPIOC->ODR = (bajt & 0x0F);
+	// Upper part of the byte
+	GPIOC->ODR = ((byte >> 4) & 0x0F) | (1<<4);
+	GPIOC->ODR = ((byte >> 4) & 0x0F);
+	// Lower part of the byte
+	GPIOC->ODR = (byte & 0x0F) | (1<<4);
+	GPIOC->ODR = (byte & 0x0F);
 	delay_ms(5);
 }
 
-void lcdReadCommand(uint8_t komenda)
+void lcdReadCommand(uint8_t command)
 {
-	GPIOC->ODR &= ~(1<<5); // niski na RS
-	lcdReadPartialByte(komenda);
+	GPIOC->ODR &= ~(1<<5); // low in RS
+	lcdReadPartialByte(command);
 }
 
-void lcdReadPartialAscii(uint8_t ASCII)
-{ // wczytywanie ASCII
-	//Starsza
-	GPIOC->ODR = ((ASCII >> 4) & 0x0F) | (1<<4) | (1<<5);
-	GPIOC->ODR = ((ASCII >> 4) & 0x0F) | (1<<5);
-	//Mlodsza
-	GPIOC->ODR = (ASCII & 0x0F) | (1<<4) | (1<<5);
-	GPIOC->ODR = (ASCII & 0x0F) | (1<<5);
+void lcdReadPartialAscii(uint8_t ascii)
+{
+	// Upper part of the byte
+	GPIOC->ODR = ((ascii >> 4) & 0x0F) | (1<<4) | (1<<5);
+	GPIOC->ODR = ((ascii >> 4) & 0x0F) | (1<<5);
+	// Lower part of the byte
+	GPIOC->ODR = (ascii & 0x0F) | (1<<4) | (1<<5);
+	GPIOC->ODR = (ascii & 0x0F) | (1<<5);
 	delay_ms(5);
 }
 
-void lcdString(char* Napis)
+void lcdString(char* str)
 {
-	while(*Napis) lcdReadPartialAscii(*Napis++);
+	while(*str) lcdReadPartialAscii(*str++);
 }
 
 void lcdCursorPositon(uint8_t y, uint8_t x)
 {
-	switch(y) // poprzez uint8_t y podam do case
+	switch(y)
+	{
+		case 0:
 		{
-			case 0:
-			{
-				y=0x00; // adres 1 znaku 1 wiersza
-			}
-			break;
-
-			case 1:
-			{
-				y=0x40; // adres 1 znaku 2 wiersza
-			}
-			break;
-
-	                case 2:
-			{
-				y=0x10; // adres 1 znaku 3 wiersza
-			}
-			break;
-
-	                case 3:
-			{
-				y=0x50; // adres 1 znaku 4 wiersza
-			}
-			break;
-
-
-
-
+			y=0x00; // 1 character 1 line
 		}
+		break;
+
+		case 1:
+		{
+			y=0x40; // 1 character 2 line
+		}
+		break;
+
+	    case 2:
+		{
+			y=0x10; // 1 character 3 line
+		}
+		break;
+
+	    case 3:
+		{
+			y=0x50; // 1 character 4 line
+		}
+		break;
+	}
 	lcdReadCommand( (0x80 + y + x) );
 }
 
@@ -96,30 +88,34 @@ void lcdInit(void){
 	lcdReadPartialByte(0x01);
 
 }
-void lcdDisplayNumber(uint8_t liczba, uint8_t rodzaj)
-{
-	char bufor[17];
-	itoa(liczba,bufor,rodzaj);
-	lcdString(bufor);
-}
-void clearLine( uint8_t line ) {
 
+void lcdDisplayNumber(uint8_t number, uint8_t type)
+{
+	char buffer[17];
+	itoa(number,buffer,type);
+	lcdString(buffer);
+}
+
+void clearLine(uint8_t line) 
+{
    uint8_t i;
-   lcdCursorPositon( line, 0 );
+   lcdCursorPositon(line,0);
    for( i=0; i<16; i++) lcdChar(' ');
 
 }
+
 void lcdChar(char c)
 {
 	lcdReadPartialByte( ( c>=0x80 && c<=0x87 ) ? (c & 0x07) : c);
 }
-void lcdDefchar(uint8_t nr, uint8_t *def_znak) // TUTAJ DO PRZEANALIZOWANIA TA FUNKCJA
+
+void lcdDefchar(uint8_t nr, uint8_t *defChar)
 {
 	register uint8_t i,c;
 	lcdReadPartialByte( 64+((nr&0x07)*8) );
 	for(i=0;i<8;i++)
 	{
-		c = *(def_znak++);
+		c = *(defChar++);
 		lcdReadPartialAscii(c);
 	}
 }
